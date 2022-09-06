@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:src="@drawable/kirby1"
+        android:id="@+id/background"/>
+
     <TextView
         android:id="@+id/greeting_textview"
         android:layout_width="wrap_content"

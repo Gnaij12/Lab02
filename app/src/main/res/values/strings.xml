@@ -7,9 +7,7 @@
     <string name="putText">By Pressing This</string>
     <string name="inputText">Text Goes From Here</string>
     <string name="likes_count">You have %1$d likes</string>
-    <string name="greeting"><sub>W</sub>el<big>come</big> <b><u>M</u><s>o</s>m</b><sup>!</sup>\n
-    <font face="monospace" color="hex_color">Hello</font> \n
-   	<font face="serif" color="hex_color">Dad</font>.</string>
+    <string name="greeting"><big>W</big>elcome to <big>K</big>irby!</string>
 
     <string-array name="planets_array">
         <item>Mercury</item>
