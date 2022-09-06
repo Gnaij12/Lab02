@@ -3,6 +3,9 @@
     <string name="increment">Increment</string>
     <string name="decrement">Decrement</string>
     <string name="greet_dad">Hello Dad</string>
+    <string name="textHere">To Here!</string>
+    <string name="putText">By Pressing This</string>
+    <string name="inputText">Text Goes From Here</string>
     <string name="likes_count">You have %1$d likes</string>
     <string name="greeting"><sub>W</sub>el<big>come</big> <b><u>M</u><s>o</s>m</b><sup>!</sup>\n
     <font face="monospace" color="hex_color">Hello</font> \n

@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     Button incrementButton;
-    TextView greetingDisplay;
+    TextView greetingDisplay,displayText;
+    EditText inputText;
     int count = 0;
     int multiplier = 1;
     String[] planets;
@@ -25,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
         planets = getResources().getStringArray(R.array.planets_array);
         leftRadBut = findViewById(R.id.radio_left);
         rightRadBut = findViewById(R.id.radio_right);
+        displayText = findViewById(R.id.displayInputText);
+        inputText = findViewById(R.id.inputText);
         incrementButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,5 +64,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+    public void putText(View view) {
+        displayText.setText(inputText.getText());
+    }
 }
