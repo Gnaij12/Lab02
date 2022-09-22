@@ -1,8 +1,14 @@
 package com.example.lab02;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
+import android.media.AudioAttributes;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +17,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
     Button incrementButton;
@@ -22,6 +32,12 @@ public class MainActivity extends AppCompatActivity {
     RadioButton leftRadBut, rightRadBut;
     int[] back_images;
     ImageView background;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    LifecycleData lifeTime;
+    TextView lifeTimeTV;
+    AppCompatButton reset;
+    String TAG = "com.example.lab02.sharedpreferences";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +64,50 @@ public class MainActivity extends AppCompatActivity {
                 background.setImageResource(back_images[count]);
             }
         });
+        //load SharedPreferences
+        sharedPreferences = getSharedPreferences(TAG,MODE_PRIVATE);
+        //Instantiate editor
+        editor = sharedPreferences.edit();
+        //lifecycledata from SharedPreferences as String
+        String lifecycleDataString = sharedPreferences.getString("lifetime","");
+        //Instantiate a new LifecycleData if empty string
+        //else convert JSON into LifecycleData oject
+        if (lifecycleDataString.equals("")) {
+            lifeTime = new LifecycleData();
+            lifeTime.duration = "Lifetime";
+        }else {
+            lifeTime = LifecycleData.parseJSON(lifecycleDataString);
+        }
+        lifeTimeTV = findViewById(R.id.lifetime);
+        reset = findViewById(R.id.reset);
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor.clear().apply();
+                lifeTime = new LifecycleData();
+                lifeTime.duration = "Lifetime";
+                displayData();
+            }
+        });
+        String currentEnclosingMethod = new Throwable()
+                .getStackTrace()[0]
+                .getMethodName();
+        updateCount(currentEnclosingMethod);
+
+    }
+    private void displayData() {
+        lifeTimeTV.setText(lifeTime.toString());
+    }
+
+    //convert lifetime to String and store in SharedPreferences
+    public void storeData(){
+        editor.putString("lifetime",lifeTime.toJSON()).apply();
+    }
+    public void updateCount(String currentEnclosingMethod) {
+        //pass name to LifecycleData to update count
+        lifeTime.updateEvent(currentEnclosingMethod);
+        displayData();
+        storeData();
     }
 
     public void decrement(View view) {
@@ -57,22 +117,60 @@ public class MainActivity extends AppCompatActivity {
             if (--count <0) count=back_images.length-1;
         background.setImageResource(back_images[count]);
     }
-    public void random(View view) {
-        count = (int) (Math.random()*20-10)*multiplier;
-        System.out.println("randomizing: " + count);
-        greetingDisplay.setText(getString(R.string.likes_count,count));
-    }
-    public void ten(View view) {
-        multiplier = 10;
-        System.out.println("Multiplier is now " + multiplier);
-    }
-    public void one(View view) {
-        multiplier = 1;
-        System.out.println("Multiplier is now " + multiplier);
-    }
-
 
     public void putText(View view) {
         displayText.setText(inputText.getText());
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.onstartsong);
+        mediaPlayer.start();
+        String currentEnclosingMethod = new Throwable()
+                .getStackTrace()[0]
+                .getMethodName();
+        updateCount(currentEnclosingMethod);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String currentEnclosingMethod = new Throwable()
+                .getStackTrace()[0]
+                .getMethodName();
+        updateCount(currentEnclosingMethod);
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        String currentEnclosingMethod = new Throwable()
+                .getStackTrace()[0]
+                .getMethodName();
+        updateCount(currentEnclosingMethod);
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.onstopsong);
+        mediaPlayer.start();
+        String currentEnclosingMethod = new Throwable()
+                .getStackTrace()[0]
+                .getMethodName();
+        updateCount(currentEnclosingMethod);
+    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        String currentEnclosingMethod = new Throwable()
+                .getStackTrace()[0]
+                .getMethodName();
+        updateCount(currentEnclosingMethod);
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        String currentEnclosingMethod = new Throwable()
+                .getStackTrace()[0]
+                .getMethodName();
+        updateCount(currentEnclosingMethod);
     }
 }
